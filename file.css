@@ -1,0 +1,186 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    width: 100%;
+    list-style: none;
+}
+
+.clearfix:after {
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+/* 头部 */
+    .head{
+        width: 100%;
+        height: 60px;
+        background-color: skyblue;
+    }
+    .head>div{
+        width: 80px;
+        position: relative;
+        left:50%;
+        margin-left: -507px;
+        font-weight: 400;
+    }
+    #go,
+    #return{
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 1px solid transparent;
+        border-radius: 10px;
+    }
+
+    #symbol{
+        padding-left: 5px;
+    }
+
+    i{
+        line-height: 30px;
+        font-style: normal;
+        padding-left:8px;
+        font-size:16px;
+    }
+
+    #go:hover,
+    #return:hover{
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        box-shadow: 2px 2px 2px -2px;
+    }
+
+/*文件页面*/
+    .fileSystem {
+        width: 1014px;
+        height: 645px;
+        margin: 0 auto;
+        background: url(images/tiaowen.jpg) ;
+        background-position: 0 -42px;
+        background-repeat:repeat-x
+    }
+
+/* 共享样式 */
+    .name,
+    .date,
+    .size,
+    .type {
+        padding-left: 8px;
+        padding-right: 5px;
+        line-height: 21px;
+        font-size: 10px;
+        float: left;
+    }
+
+    .name {
+        width: 587px;
+
+    }
+
+    .date {
+        width: 147px;
+    }
+
+    .size {
+        width: 87px;
+    }
+
+    .type {
+        width: 107px;
+    }
+
+/* 表头 */
+    .tHead{
+        background-color: #fff;
+        height: 26px;
+        padding-top: 8px;
+        padding-bottom: 8px;;
+    }
+
+
+    .tHead .name{
+        padding-left:36px;
+    }
+    .tHead .name,
+    .tHead .date,
+    .tHead .size,
+    .tHead .type {
+        line-height: 26px;
+    }
+
+    .tHead .date,
+    .tHead .size,
+    .tHead .type {
+        border-left: 2px dotted;
+    }
+
+/*表格*/
+    .tBody .name,
+    .tBody .date,
+    .tBody .size,
+    .tBody .type {
+        padding-left: 9px;
+        font-size: 13px;
+        float: left;
+    }
+
+    .tBody .size {
+        text-align: right;
+    }
+
+    .tBody:hover{
+        background-color: rgba(16, 50, 201, 0.3);
+    }
+
+    .tBody img{
+        padding-left: 8px;
+        float:left;
+        width:20px;
+        height: 20px;
+    }
+    /* .tBody{
+        position:relative;
+    } */
+    .tBody input{
+        display: none; 
+        position:absolute;
+        font-size: 13px;
+        margin-left:35px;
+        background-color: #fff;
+        z-index: 10;
+    }
+
+    /* 菜单 */
+    .menu {
+        position: absolute;
+        display: none;
+        padding: 2px;
+        width: 200px;
+        font-size: 14px;
+        text-indent: 1em;
+        border: 1px solid rgb(65, 61, 61);
+        box-shadow: 2px 2px 2px -2px;
+        border-radius: 5px;
+        background: rgba(245, 242, 242, 0.7);
+        z-index: 100;
+    }
+
+    .menu div {
+        height: 17px;
+        margin: 8px;
+        border: 1px solid transparent;
+        border-radius: 5px;
+    }
+
+    .menu div:hover {
+        background-color: rgb(206, 198, 198);
+    }
+
+    .menu hr {
+        margin: 4px 4px;
+    }
