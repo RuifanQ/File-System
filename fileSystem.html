@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件管理系统</title>
+    <link rel="stylesheet" href="file.css">
+</head>
+
+<body>
+    <!-- 引入需要的依赖包 -->
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
+    <script src="js/babel.min.js"></script>
+    <script src="js/prop-types.js"></script>
+
+    <!-- 头部栏 -->
+    <div class="head">
+        <div>
+            <div id="go"><i>&lt;</i></div>
+            <div id="return"><i>&gt;</i></div>
+        </div>
+        <div id="symbol">后退 | 前进</div>
+    </div>
+
+    <!-- 文件显示的区域 -->
+    <div class="file ">
+
+    </div>
+
+    <!-- jsx代码 -->
+    <script type="text/babel">
+        //1.创建组件
+        class File extends React.Component {
+            state = { ...this.props };
+
+            // addEle = (value, index) => {
+            //     // 需要指定key 不重复，否则会报警告
+            //     return (
+            //         <File {...value} key={index} />
+            //     )
+            // }
+
+            render() {
+                // if (this.state.type == '1' || this.state.spread == false) {
+                return (
+                    <li className="tBody clearfix" onContextMenu={this.conmenu} onClick={this.cancel}>
+                        <img src={this.state.type == '1' ? "images/txt.png" : "images/filebox.png"} />
+                        <input type="text" ref={c => this.input = c} value={this.state.name} onChange={this.newname_next} onBlur={this.last} />
+                        <div className="name">{this.state.name}</div>
+                        <div className="date">{this.state.date}</div>
+                        <div className="size">{this.state.size}</div>
+                        <div className="type">{this.state.type == '1' ? 'TXT文件' : '文件夹'}</div>
+                        <div className="menu fileMenu" ref={c => this.menu = c}>
+                            <div className="newname" onClick={this.newname}>重命名</div>
+                            <hr />
+                            <div className="shear">剪切</div>
+                            <div className="copy">复制</div>
+                            <div className="paste">粘贴</div>
+                            <div className="delete" onClick={this.delete}>删除</div>
+                        </div>
+                    </li>
+                )
+                // }
+                // else {
+                //     let values = this.state.content;
+                //     values = values.filter((value) => {
+                //         return value.close == false;
+                //     });
+                //     return values.map((value, index) => {
+                //         return this.addEle(value, index);
+                //     });
+                // }
+            }
+
+            // 右键菜单
+            conmenu = (e) => {
+                var e = e || window.event;
+                var oX = e.clientX;
+                var oy = e.clientY;
+                let menu = this.menu;
+                menu.style.display = 'block';
+                menu.style.left = oX + 'px';
+                menu.style.top = oy + 'px';
+                this.setState();
+                e.stopPropagation()
+                // e.nativeEvent.stopPropagation();
+                e.preventDefault();
+            }
+
+            cancel = (e) => {
+                let menu = this.menu;
+                menu.style.display = 'none';
+            }
+
+            //重命名
+            newname = (e) => {
+                this.input.style.display = 'block';
+                this.setState();
+            }
+            newname_next = (e) => {
+                this.setState({ name: this.input.value });
+                e.stopPropagation();
+            }
+            last = (e) => {
+                this.input.style.display = 'none';
+                this.setState();
+            }
+
+            //删除
+            delete = (e) => {
+                let values = this.state.parent.state.content.filter(
+                    (value) => {
+                        return value.name != this.state.name;
+                    }
+                )
+                console.log(values);
+                this.state.parent.setState(this.delete_last(values));
+                console.log(this.state.parent);
+
+            }
+            delete_last = (values) => {
+                return { content: values };
+            }
+
+        }
+
+        class FileSystem extends React.Component {
+            render() {
+                return (
+                    <div className="fileSystem " onContextMenu={this.conmenu} onClick={this.cancel}>
+                        <ul className="fileList">
+
+
+                            <li className="tHead clearfix" onClick={this.update}>
+
+                                <div className="name">名称</div>
+                                <div className="date">创建时间</div>
+                                <div className="size">大小</div>
+                                <div className="type">种类</div>
+                            </li>
+
+
+                            <ul className="fileList fileBody" >
+                                {
+                                    this.state.content.map(
+                                        (value, index) => {
+                                            return this.addEle(value, index);
+                                        }
+                                    )}
+                            </ul>
+
+                            <div className="menu fileFoxMenu" ref={c => this.menu = c}>
+                                <div className="newFile" onClick={this.newfile}>新建文件</div>
+                                <div className="newFileBox" onClick={this.newfilebox}>新建文件夹</div>
+                                <hr />
+                                <div className="view">显示</div>
+                                <div className="sort">排序方式</div>
+                            </div>
+                        </ul>
+                    </div>
+                )
+            }
+
+            state = {
+                name: '第一个文件夹',
+                date: '2020年11月12日 12:15',
+                size: '--',
+                type: '2',//1为txt文件，2为文件夹
+                spread: true,
+                parent: null,
+                content: [
+                    {
+                        parent: this,
+                        name: '第一个文件',
+                        date: '2020年10月20日 12:15',
+                        size: '--',
+                        type: '1',//1为txt文件，2为文件夹
+                        spread: false,
+                        content: [],
+                        close: false
+                    },
+                    {
+                        parent: this,
+                        name: '第二个文件',
+                        date: '2020年09月13日 12:15',
+                        size: '--',
+                        type: '1',//1为txt文件，2为文件夹
+                        spread: false,
+                        content: [],
+                        close: false
+                    },
+                ],
+                close: false
+            };
+
+            conmenu = (e) => {
+                var e = e || window.event;
+                var oX = e.clientX;
+                var oy = e.clientY;
+                let menu = this.menu;
+                menu.style.display = 'block';
+                menu.style.left = oX + 'px';
+                menu.style.top = oy + 'px';
+                this.setState();
+                e.preventDefault();
+            }
+
+
+
+            cancel = (e) => {
+                let menu = this.menu;
+                menu.style.display = 'none';
+            }
+
+            //新建文件
+            newfile = () => {
+                this.state.content.push({
+                    parent: this,
+                    name: '未命名的文件',
+                    date: '2020年10月20日 12:15',
+                    size: '--',
+                    type: '1',//1为txt文件，2为文件夹
+                    spread: false,
+                    content: [],
+                    close: false
+                });
+                this.setState({ content: this.state.content });
+            }
+
+            newfilebox = () => {
+                this.state.content.push({
+                    parent: this,
+                    name: '未命名的文件夹',
+                    date: '2020年10月20日 12:15',
+                    size: '--',
+                    type: '2',//1为txt文件，2为文件夹
+                    spread: false,
+                    content: [],
+                    close: false
+                });
+                this.setState({ content: this.state.content });
+            }
+
+            update = () => {
+                console.log(this.state);
+                this.setState(this.update_last);
+            }
+            update_last = () => {
+                return { content: this.state.content }
+            }
+
+            addEle = (value, index) => {
+                // 需要指定key 不重复，否则会报警告
+                return (
+                    <File {...value} key={index} />
+                )
+            }
+
+        }
+
+
+        ReactDOM.render(<FileSystem />, document.querySelector('.file'));
+    </script>
+
+</body>
+
+</html>
